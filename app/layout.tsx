@@ -1,10 +1,10 @@
 import "./globals.css"
 import React                    from "react"
 import type { Metadata }        from "next"
-import Navbar                   from "@/components/Navbar"
+import Navbar                   from "@/components/shared/navbar/Navbar"
 import { ClerkProvider }        from "@clerk/nextjs"
 import { Inter, Space_Grotesk } from "next/font/google"
-import { ThemeProvider }        from "@/context/ThemeProvider";
+import { ThemeProvider }        from "@/context/ThemeProvider"
 
 const inter = Inter({
   subsets: ['latin'],
