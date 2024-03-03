@@ -10,7 +10,7 @@ import QuestionCard           from "@/components/cards/QuestionCard";
 import { getQuestions }       from "@/lib/actions/question.action";
 import { GetQuestionsParams } from "@/lib/actions/shared.types";
 
-export default async function Home(params: GetQuestionsParams) {
+export default async function Home({params}: {params: GetQuestionsParams}) {
   const { questions } = await getQuestions( params )
   
   return (

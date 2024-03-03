@@ -67,7 +67,7 @@ const Question = ({ mongoUserId }: Props) => {
     }
   }
   
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, field: {name: string}) => {
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, field: {name: string; value: string[]}) => {
     if (e.key === 'Enter' && field.name === 'tags') {
       e.preventDefault()
       
@@ -93,7 +93,7 @@ const Question = ({ mongoUserId }: Props) => {
     }
   }
   
-  const handleTagRemove = (tag: string, field: {name: string}) => {
+  const handleTagRemove = (tag: string, field: {name: string; value: string[]}) => {
     const newTags = field.value.filter((item: string) => item !== tag)
     
     form.setValue('tags', newTags)
@@ -146,7 +146,7 @@ const Question = ({ mongoUserId }: Props) => {
               <FormControl className="mt-3.5">
                 <Editor
                   apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
-                  onInit={(evt, editor) => editorRef.current = editor}
+                  onInit={(evt, editor) => (editorRef.current = editor)}
                   onBlur={field.onBlur}
                   onEditorChange={(content) => field.onChange(content)}
                   initialValue='<p>This is the initial content of the editor.</p>'
