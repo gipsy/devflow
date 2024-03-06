@@ -3,7 +3,7 @@
 import { connectToDatabase } from "@/lib/mongoose";
 import Question              from "@/database/question.model";
 import Tag                   from "@/database/tag.model";
-// import User                  from "@/database/user.model";
+import User                  from "@/database/user.model";
 import {
   CreateQuestionParams,
   GetQuestionsParams
@@ -14,9 +14,9 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     await connectToDatabase()
     
-    const questions = await Question.find(params)
-      // .populate({ path: 'tags', model: Tag })
-      // .populate({ path: 'author', model: User })
+    const questions = await Question.find({})
+      .populate({ path: 'tags', model: Tag })
+      .populate({ path: 'author', model: User })
       .sort({ createdAt: -1 })
       // .exec()
     
@@ -28,6 +28,7 @@ export async function getQuestions(params: GetQuestionsParams) {
 }
 
 export async function createQuestion(params: CreateQuestionParams) {
+  console.log('createQuestion')
   try {
     await connectToDatabase()
     
@@ -37,8 +38,11 @@ export async function createQuestion(params: CreateQuestionParams) {
     const question = await Question.create({
       title,
       content,
+      tags,
       author
     })
+
+    console.log('QUESTION', question)
     
     const tagDocuments = []
     
@@ -47,7 +51,7 @@ export async function createQuestion(params: CreateQuestionParams) {
       const existingTag = await Tag.findOneAndUpdate(
         {name: { $regex: new RegExp(`^${tag}$`, "i") }},
         {$setOnInsert: { name: tag }, $push: { question: question._id }},
-        {upset: true, new: true},
+        {upsert: true, new: true},
       )
       
       tagDocuments.push(existingTag._id)
