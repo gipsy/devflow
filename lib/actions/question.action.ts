@@ -10,18 +10,54 @@ import {
   GetQuestionByIdParams
 }       from "./shared.types";
 import { revalidatePath }    from "next/cache";
+import { FilterQuery } from "mongoose";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
     await connectToDatabase()
+
+    const { page = 1, pageSize = 10, searchQuery, filter } = params
+
+        // Calculcate the number of posts to skip based on the page number and page size
+        const skipAmount = (page - 1) * pageSize;
+
+        const query: FilterQuery<typeof Question> = {};
+    
+        if(searchQuery) {
+          query.$or = [
+            { title: { $regex: new RegExp(searchQuery, "i")}},
+            { content: { $regex: new RegExp(searchQuery, "i")}},
+          ]
+        }
+    
+        let sortOptions = {};
+    
+        switch (filter) {
+          case "newest":
+            sortOptions = { createdAt: - 1 }
+            break;
+          case "frequent":
+            sortOptions = { views: -1 }
+            break;
+          case "unanswered":
+            query.answers = { $size: 0 }
+            break;
+          default:
+            break;
+        }
     
     const questions = await Question.find({})
       .populate({ path: 'tags', model: Tag })
       .populate({ path: 'author', model: User })
-      .sort({ createdAt: -1 })
-      // .exec()
+      .skip(skipAmount)
+      .limit(pageSize)
+      .sort(sortOptions)
     
-    return { questions }
+      const totalQuestions = await Question.countDocuments(query);
+
+      const isNext = totalQuestions > skipAmount + questions.length;
+  
+    return { questions, isNext }
   } catch (error) {
     console.log(error)
     throw error
@@ -33,8 +69,9 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
     await connectToDatabase()
 
     const { questionId } = params
+    console.log('questionID', questionId)
 
-    const question = await Question.findById({questionId})
+    const question = await Question.findById(questionId)
       .populate({path: 'tags', model: Tag, select: '_id name'})
       .populate({path: 'author', model: User, select: '_id clerkId name picture'})
 
@@ -46,7 +83,6 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
 }
 
 export async function createQuestion(params: CreateQuestionParams) {
-  console.log('createQuestion')
   try {
     await connectToDatabase()
     

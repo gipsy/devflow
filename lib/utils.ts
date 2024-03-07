@@ -2,8 +2,8 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import qs from "query-string"
 import { formatDistanceToNow } from "date-fns"
-import { BADGE_CRITERIA } from "@/constants";
-import { BadgeCounts } from "@/types";
+// import { BADGE_CRITERIA } from "@/constants";
+// import { BadgeCounts } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -84,32 +84,32 @@ export const removeKeysFromQuery = ({ params, keysToRemove}: RemoveUrlQueryParam
   { skipNull: true})
 }
 
-interface BadgeParam {
-  criteria: {
-    type: keyof typeof BADGE_CRITERIA;
-    count: number;
-  }[]
-}
+// interface BadgeParam {
+//   criteria: {
+//     type: keyof typeof BADGE_CRITERIA;
+//     count: number;
+//   }[]
+// }
 
-export const assignBadges = (params: BadgeParam) => {
-  const badgeCounts: BadgeCounts = {
-    GOLD: 0,
-    SILVER: 0,
-    BRONZE: 0,
-  }
+// export const assignBadges = (params: BadgeParam) => {
+//   const badgeCounts: BadgeCounts = {
+//     GOLD: 0,
+//     SILVER: 0,
+//     BRONZE: 0,
+//   }
 
-  const { criteria } = params;
+//   const { criteria } = params;
 
-  criteria.forEach((item) => {
-    const { type, count } = item;
-    const badgeLevels: any = BADGE_CRITERIA[type];
+//   criteria.forEach((item) => {
+//     const { type, count } = item;
+//     const badgeLevels: any = BADGE_CRITERIA[type];
 
-    Object.keys(badgeLevels).forEach((level: any) => {
-      if(count >= badgeLevels[level]) {
-        badgeCounts[level as keyof BadgeCounts] +=1 ;
-      }
-    })
-  })
+//     Object.keys(badgeLevels).forEach((level: any) => {
+//       if(count >= badgeLevels[level]) {
+//         badgeCounts[level as keyof BadgeCounts] +=1 ;
+//       }
+//     })
+//   })
 
-  return badgeCounts;
-}
+//   return badgeCounts;
+// }

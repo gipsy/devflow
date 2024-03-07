@@ -1,10 +1,10 @@
 import Metric from '@/components/shared/Metric'
 import { getQuestionById } from '@/lib/actions/question.action'
-import { getTimestamp } from '@/lib/utils'
+import { formatAndDivideNumber, getTimestamp } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const Page = ({ params, searchParams }: any) => {
+const Page = async ({ params, searchParams }: any) => {
   const result = await getQuestionById({questionId: params.id})
   return (
     <>
@@ -51,7 +51,7 @@ const Page = ({ params, searchParams }: any) => {
         <Metric
           imgUrl="/assets/icons/eye.svg"
           alt="eye"
-          value={formatAndVivideNumber(result.views)}
+          value={formatAndDivideNumber(result.views)}
           title=" Views"
           textStyles="small-medium text-dark400_light800"
         />
