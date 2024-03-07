@@ -6,7 +6,8 @@ import Tag                   from "@/database/tag.model";
 import User                  from "@/database/user.model";
 import {
   CreateQuestionParams,
-  GetQuestionsParams
+  GetQuestionsParams,
+  GetQuestionByIdParams
 }       from "./shared.types";
 import { revalidatePath }    from "next/cache";
 
@@ -27,6 +28,23 @@ export async function getQuestions(params: GetQuestionsParams) {
   }
 }
 
+export async function getQuestionById(params: GetQuestionByIdParams) {
+  try {
+    await connectToDatabase()
+
+    const { questionId } = params
+
+    const question = await Question.findById({questionId})
+      .populate({path: 'tags', model: Tag, select: '_id name'})
+      .populate({path: 'author', model: User, select: '_id clerkId name picture'})
+
+    return question
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export async function createQuestion(params: CreateQuestionParams) {
   console.log('createQuestion')
   try {
@@ -38,12 +56,9 @@ export async function createQuestion(params: CreateQuestionParams) {
     const question = await Question.create({
       title,
       content,
-      tags,
       author
     })
 
-    console.log('QUESTION', question)
-    
     const tagDocuments = []
     
     // Create the tags or get if they already exists
@@ -55,18 +70,17 @@ export async function createQuestion(params: CreateQuestionParams) {
       )
       
       tagDocuments.push(existingTag._id)
-      
-      await Question.findByIdAndUpdate(question._id, {
-        $push: { tags: { $each: tagDocuments } }
-      })
-      
-      
-      // Create an interaction record for the user's ask_question action
-      
-      // Increment author's reputation by +5 for creating an action
-  
-      revalidatePath(path)
     }
+      
+    await Question.findByIdAndUpdate(question._id, {
+      $push: { tags: { $each: tagDocuments } }
+    })
+      
+    // Create an interaction record for the user's ask_question action
+    
+    // Increment author's reputation by +5 for creating an action
+  
+    revalidatePath(path)
   } catch (error) {
     console.log(error)
   }

@@ -2,7 +2,7 @@ import React            from 'react'
 import Link             from "next/link";
 import RenderTag        from "@/components/shared/RenderTag";
 import Metric                            from "@/components/shared/Metric";
-import { formatBigNumber, getTimestamp } from "@/lib/utils";
+import { formatAndDivideNumber, formatBigNumber, getTimestamp } from "@/lib/utils";
 
 interface QuestionProps {
   _id: string;
@@ -81,7 +81,7 @@ const QuestionCard = ({
           alt="user"
           value={author.name}
           title={` - asked ${getTimestamp(createdAt)}`}
-          href={`/profile${author._id}`}
+          href={`/profile/${author._id}`}
           isAuthor
           textStyles="small-medium text-dark400_light800"
         />
@@ -89,7 +89,7 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"
-          value={formatBigNumber(upvotes)}
+          value={formatAndDivideNumber(upvotes)}
           title=" Votes"
           textStyles="small-medium text-dark400_light800"
         />
