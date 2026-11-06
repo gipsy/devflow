@@ -10,8 +10,13 @@ import QuestionCard           from "@/components/cards/QuestionCard";
 import { getQuestions }       from "@/lib/actions/question.action";
 import { GetQuestionsParams } from "@/lib/actions/shared.types";
 
-export default async function Home({params}: {params: GetQuestionsParams}) {
-  const { questions } = await getQuestions( params )
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<GetQuestionsParams>
+}) {
+  const params = await searchParams
+  const { questions } = await getQuestions(params)
   
   return (
     <>
@@ -25,7 +30,6 @@ export default async function Home({params}: {params: GetQuestionsParams}) {
       
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearch
-          route="/"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           otherClasses="flex-1"
