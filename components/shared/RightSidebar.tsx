@@ -87,22 +87,19 @@ const RightSidebar = () => {
             return (
               <Link
                 key={question._id}
-                href={`/questions/${question._id}`}
-                legacyBehavior
-                passHref
+                href={`/question/${question._id}`}
+                className="flex cursor-pointer items-center justify-between gap-7"
               >
-                <a className="flex cursor-pointer items-center justify-between gap-7">
-                  <p className="body-medium text-dark500_light700">
-                    {question.title}
-                  </p>
-                  { /* <Image */ }
-                  { /*  src="/assets/icons/chevron-right.svg" */ }
-                  { /*  alt="chevron right" */ }
-                  { /*  width={20} */ }
-                  { /*  height={20} */ }
-                  { /*  className="invert-colors" */ }
-                  { /* /> */ }
-                </a>
+                <p className="body-medium text-dark500_light700">
+                  {question.title}
+                </p>
+                { /* <Image */ }
+                { /*  src="/assets/icons/chevron-right.svg" */ }
+                { /*  alt="chevron right" */ }
+                { /*  width={20} */ }
+                { /*  height={20} */ }
+                { /*  className="invert-colors" */ }
+                { /* /> */ }
               </Link>
             )
           })}

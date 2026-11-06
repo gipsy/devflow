@@ -4,8 +4,13 @@ import { formatAndDivideNumber, getTimestamp } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const Page = async ({ params, searchParams }: any) => {
-  const result = await getQuestionById({questionId: params.id})
+interface QuestionPageProps {
+  params: Promise<{ id: string }>
+}
+
+const Page = async ({ params }: QuestionPageProps) => {
+  const { id } = await params
+  const result = await getQuestionById({ questionId: id })
   return (
     <>
       <div className="flex-start w-full flex-col">

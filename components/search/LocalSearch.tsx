@@ -5,7 +5,6 @@ import Image     from "next/image"
 import { Input } from "@/components/ui/input";
 
 interface CustomInputProps {
-  route: string;
   iconPosition: string;
   imgSrc: string;
   placeholder?: string;
@@ -13,7 +12,6 @@ interface CustomInputProps {
 }
 
 const LocalSearch = ({
-  route,
   iconPosition,
   imgSrc,
   placeholder,

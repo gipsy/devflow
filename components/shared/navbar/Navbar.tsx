@@ -3,7 +3,7 @@
 // import styles                   from "./navbar.module.css"
 import Link                     from "next/link"
 import Image                    from "next/image"
-import { SignedIn, UserButton } from "@clerk/nextjs"
+import { Show, UserButton } from "@clerk/nextjs"
 import Theme                    from "@/components/shared/navbar/Theme";
 import MobileNav                from "@/components/shared/navbar/MobileNav";
 import GlobalSearch             from "@/components/search/GlobalSearch";
@@ -35,9 +35,8 @@ const Navbar = () => {
         
         <Theme />
         
-        <SignedIn>
+        <Show when="signed-in">
           <UserButton
-            afterSignOutUrl="/"
             appearance={{
               elements: {
                 avatarBox: 'h-10 w-10'
@@ -47,7 +46,7 @@ const Navbar = () => {
               }
             }}
           />
-        </SignedIn>
+        </Show>
         
         <MobileNav/>
         
