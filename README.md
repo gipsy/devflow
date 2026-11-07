@@ -1,6 +1,6 @@
 # DevFlow
 
-**Pet project** — a Stack Overflow–style Q&A app: browse questions, filters and search, tags and community listings, rich-text questions via TinyMCE, and Clerk-backed auth. The UI uses a three-column shell (sidebars + main), light/dark theming, and shadcn-style Radix components.
+DevFlow is a Stack Overflow–style Q&A pet project on Next.js 15: browse, filter, and search questions; tags and community pages; rich-text posts via TinyMCE. MongoDB + Clerk auth. Three-column shell with light/dark theme and Radix/shadcn UI.
 
 ## What’s inside (from the repo)
 
